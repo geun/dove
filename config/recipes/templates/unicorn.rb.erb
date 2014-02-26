@@ -1,0 +1,42 @@
+working_directory "<%= current_path %>"
+pid "<%= unicorn_pid %>"
+stderr_path "<%= unicorn_log %>"
+stdout_path "<%= unicorn_log %>"
+
+
+preload_app true
+#listen 8080, :tcp_nopush => true
+listen "/tmp/unicorn.<%= application %>.sock"
+worker_processes <%= unicorn_workers %>
+timeout 30
+
+before_fork do |server, worker|
+    # Disconnect since the database connection will not carry over
+    if defined? ActiveRecord::Base
+        ActiveRecord::Base.connection.disconnect!
+    end
+
+    # Quit the old unicorn process
+    old_pid = "#{server.config[:pid]}.oldbin"
+    if File.exists?(old_pid) && server.pid != old_pid
+        begin
+            sig = (worker.nr + 1) >= server.worker_processes ? :QUIT : :TTOU
+            Process.kill(sig, File.read(old_pid).to_i)
+        rescue Errno::ENOENT, Errno::ESRCH
+            # someone else did our job for us
+        end
+    end
+end
+
+after_fork do |server, worker|
+    # Start up the database connection again in the worker
+    if defined?(ActiveRecord::Base)
+        ActiveRecord::Base.establish_connection
+    end
+end
+
+before_exec do |server|
+    ENV['BUNDLE_GEMFILE'] = "<%= current_path %>/Gemfile"
+end
+
+

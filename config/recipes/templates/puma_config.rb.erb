@@ -1,0 +1,13 @@
+#ENV["RAILS_ENV"] ||= 'production'
+#rails_env = ENV['RAILS_ENV'] || 'development'
+
+rails_env = 'production'
+environment "production"
+
+threads 4,4
+bind  "unix://<%= shared_path %>/tmp/puma/<%= application %>-puma.sock"
+pidfile "<%= shared_path %>/tmp/puma/pid"
+state_path "<%= shared_path %>/tmp/puma/state"
+
+daemonize true
+activate_control_app

@@ -1,0 +1,19 @@
+production:
+  adapter: postgresql
+  encoding: utf8
+  database: <%= postgresql_database %>
+  pool: 64
+  username: <%= postgresql_user %>
+  password: <%= postgresql_password %>
+  host: <%= postgresql_host %>
+  template: template0
+
+staging:
+  adapter: postgresql
+  encoding: utf8
+  database: <%= postgresql_database %>
+  pool: 64
+  username: <%= postgresql_user %>
+  password: <%= postgresql_password %>
+  host: <%= postgresql_host %>
+  template: template0
