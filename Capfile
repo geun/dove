@@ -30,7 +30,8 @@ Dir.glob('lib/capistrano/**/*.rb').each { |r| import r }
 
 #load 'lib/capistrano/tasks/unicorn.cap'
 #load 'lib/capistrano/tasks/check.cap'
-load 'lib/capistrano/tasks/ubuntu.cap'
+import 'lib/capistrano/tasks/ubuntu.cap'
+import 'lib/capistrano/tasks/nginx.cap'
 
 
 

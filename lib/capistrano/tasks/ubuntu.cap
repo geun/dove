@@ -1,0 +1,56 @@
+namespace :ubuntu do
+  desc "Configure Server Default"
+  task :setup do
+
+  end
+
+  desc "Set user group in sudo to make easy to install"
+  task :add_user do
+    on roles(:all), in: :parallel do |host|
+      user = fetch(:deploy_user)
+      #execute :sudo, "adduser deploy"
+      execute :sudo, "usermod -a -G sudo #{user}"
+      execute :sudo, "cp /etc/sudoers /etc/sudoers.bak"
+      execute :sudo, "cat /etc/sudoers > ~/x19fhsgud98fys7d"
+      execute :sudo, "echo '#{user} ALL=(ALL) NOPASSWD:ALL' >> ~/x19fhsgud98fys7d"
+      execute :sudo, "chown root:root ~/x19fhsgud98fys7d"
+      execute :sudo, "chmod 0440 ~/x19fhsgud98fys7d"
+      execute :sudo, "mv ~/x19fhsgud98fys7d /etc/sudoers"
+    end
+  end
+  after "ubuntu:setup", "ubuntu:add_user"
+
+  desc 'change ftp.daum.net'
+  task :repo do
+    on roles(:all), in: :parallel do |host|
+      execute :sudo, "sed -i 's/kr.archive.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list"
+      execute :sudo, "apt-get -y update"
+    end
+  end
+  #after "ubuntu:setup", "ubuntu:repo"
+
+  desc "Set enUS.UTF-8"
+  task :locale do
+    on roles(:all), in: :parallel do |host|
+      execute :sudo, "locale-gen en_US.UTF-8"
+      execute :echo, 'LC_ALL="en_US.UTF-8" >> /tmp/set_locale'
+      execute :echo, 'LANGUAGE="en_US.UTF-8" >> /tmp/set_locale'
+      execute :cat, "/tmp/set_locale /etc/environment > /tmp/environment.tmp"
+      execute :sudo, "mv /tmp/environment.tmp /etc/environment"
+      execute :locale
+    end
+  end
+  after "ubuntu:setup", "ubuntu:locale"
+
+  task :build do
+    on roles(:all), in: :parallel do |host|
+      execute :sudo, "apt-get -y install linux-headers-server build-essential", :pty => true do |ch, stream, data|
+        press_yes(ch, stream, data)
+    end
+      #run "#{sudo} apt-get install linux-headers-server build-essential", pty: true do |ch, stream, data|
+      #  press_yes( ch, stream, data)
+      #end
+    end
+  end
+  after "ubuntu:setup", "ubuntu:build"
+end

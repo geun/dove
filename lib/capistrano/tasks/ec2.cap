@@ -1,0 +1,6 @@
+namespace :ec2 do
+  task :create_ssh_key do
+    ask(:key_name, "geun")
+    execute :scp, "-i my-key-pair.pem ec2-user@ec2-198-51-100-1.compute-1.amazonaws.com:~/SampleFile.txt ~/SampleFile2.txt"
+  end
+end

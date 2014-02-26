@@ -1,0 +1,19 @@
+namespace :load do
+  task :defaults do
+    set :templates_path, "config/deploy/templates"
+
+    set :nginx_server_name, -> { "www.example.com" }
+    set :nginx_use_ssl, false
+    set :nginx_ssl_certificate, -> { "#{fetch(:nginx_server_name)}.crt" }
+    set :nginx_ssl_certificate_key, -> { "#{fetch(:nginx_server_name)}.key" }
+    set :nginx_upload_local_certificate, -> { true }
+    set :nginx_ssl_certificate_local_path, -> { "/etc/certificates/" }
+    set :nginx_ssl_certificate_key_local_path, -> { "/etc/certificates/keys" }
+
+    set :unicorn_pid, -> { "#{current_path}/tmp/pids/unicorn.pid" }
+    set :unicorn_config, -> { "#{shared_path}/config/unicorn.rb" }
+    set :unicorn_log, -> { "#{shared_path}/log/unicorn.log" }
+    set :unicorn_user, -> { fetch(:user) }
+    set :unicorn_workers, 4
+  end
+end
