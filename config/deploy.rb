@@ -8,7 +8,8 @@ set :repo_url, 'git@gitbub.com:geun/logging_intra.git'
 # set :user, "deploy"
 
 # Default branch is :master
-# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+
 
 # Default deploy_to directory is /var/www/my_app
 set :deploy_to, "/home/#{user}/#{application}"
@@ -44,7 +45,13 @@ set :default_env, {
 }
 
 # Default value for keep_releases is 5
-# set :keep_releases, 5
+set :keep_releases, 5
+
+#https://semaphoreapp.com/blog/2013/11/26/capistrano-3-upgrade-guide.html
+#set :linked_files, %w{config/database.yml config/config.yml}
+#set :linked_dirs, %w{bin log tmp vendeor/bundle public/system}
+#SSHKit.config.command_map[:rake] = "bundle exec rake"
+#SSHKit.config.command_map[:rails] = "bundle exec rake"
 
 namespace :deploy do
 
