@@ -2,17 +2,15 @@
 lock '3.1.0'
 
 set :application, 'logging_intra'
-set :repo_url, 'git@gitbub.com:geun/logging_intra.git'
+set :deploy_user, "deploy"
 
-# Deploy user
-# set :user, "deploy"
+
+set :repo_url, 'git@gitbub.com:geun/logging_intra.git'
 
 # Default branch is :master
 ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
-
 # Default deploy_to directory is /var/www/my_app
-set :deploy_to, "/home/#{user}/#{application}"
 # set :deploy_to, '/var/www/my_app'
 
 # Default value for :scm is :git
@@ -25,7 +23,7 @@ set :deploy_to, "/home/#{user}/#{application}"
 # set :log_level, :debug
 
 # Default value for :pty is false
-# set :pty, true
+set :pty, true
 
 # Default value for :linked_files is []
 # set :linked_files, %w{config/database.yml}
@@ -34,15 +32,14 @@ set :deploy_to, "/home/#{user}/#{application}"
 # set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 # Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+#set :path, "/home/#{user}/.rbenv/bin:/home/#{user}/.rbenv/shims/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:$PATH"
+#set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
-set :path, "/home/#{user}/.rbenv/bin:/home/#{user}/.rbenv/shims/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:$PATH"
-
-set :default_env, {
-    'RBENV_ROOT' => "/home/#{user}/.rbenv/",
-    'PATH' => path,
-    'RAILS_ENV' => rails_env
-}
+#set :default_env, {
+#    'RBENV_ROOT' => "/home/#{user}/.rbenv/",
+#    'PATH' => path,
+#    'RAILS_ENV' => rails_env
+#}
 
 # Default value for keep_releases is 5
 set :keep_releases, 5
@@ -52,6 +49,13 @@ set :keep_releases, 5
 #set :linked_dirs, %w{bin log tmp vendeor/bundle public/system}
 #SSHKit.config.command_map[:rake] = "bundle exec rake"
 #SSHKit.config.command_map[:rails] = "bundle exec rake"
+
+# config/deploy.rb
+set :rbenv_type, :user # or :system, depends on your rbenv setup
+set :rbenv_ruby, '2.0.0-p247'
+set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
+set :rbenv_map_bins, %w{rake gem bundle ruby rails}
+set :rbenv_roles, :all # default value
 
 namespace :deploy do
 

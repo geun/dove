@@ -8,6 +8,7 @@ def set_default(name, *args, &block)
 end
 
 def press_yes(ch, stream, data)
+
   if data =~ /Do.you.want.to.continue./
     ch.send_data("y\n")
   else
@@ -24,6 +25,27 @@ def press_enter( ch, stream, data)
     Capistrano::Configuration.default_io_proc.call( ch, stream, data)
   end
 end
+
+
+def smart_template(from, to=nil)
+  to ||= from
+  full_to_path = "#{shared_path}/config/#{to}"
+  if from_erb_path = template_file(from)
+    from_erb = StringIO.new(ERB.new(File.read(from_erb_path)).result(binding))
+    upload! from_erb, full_to_path
+    info "copying: #{from_erb} to: #{full_to_path}"
+  else
+    error "error #{from} not found"
+  end
+end
+
+def template_file(name)
+  if File.exist?(file = "config/deploy/#{fetch(:application)}")
+
+  end
+
+end
+
 
 
 namespace :deploy do

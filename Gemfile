@@ -1,5 +1,9 @@
 source 'https://rubygems.org'
 
 gem 'capistrano',"~> 3.1.0"
-#gem 'capistrano-rails'
+
+# if you are using RBENV
 gem 'capistrano-rbenv'
+
+# integrate bundler with capistrano
+gem 'capistrano-bundler'
