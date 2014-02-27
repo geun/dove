@@ -24,6 +24,7 @@ set :full_app_name, "#{fetch(:application)}_#{fetch(:stage)}"
 # something that quacks like a hash can be used to set
 # extended properties on the server.
 server 'ec2-54-199-146-176.ap-northeast-1.compute.amazonaws.com', user: 'ubuntu', roles: %w{app web db}, my_property: :my_value
+server 'ec2-54-199-222-155.ap-northeast-1.compute.amazonaws.com', user: 'ubuntu', roles: %w{app web}, my_property: :my_value
 
 set :deploy_to, "/home/#{fetch(:deploy_user)}/apps/#{fetch(:full_app_name)}"
 
