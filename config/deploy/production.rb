@@ -25,7 +25,7 @@ set :full_app_name, "#{fetch(:application)}_#{fetch(:stage)}"
 # definition into the server list. The second argument
 # something that quacks like a hash can be used to set
 # extended properties on the server.
-server 'ec2-54-199-146-176.ap-northeast-1.compute.amazonaws.com', user: "#{fetch(:deploy_user)}", roles: %w{web app monitor}, my_property: :my_value
+server 'ec2-54-238-161-103.ap-northeast-1.compute.amazonaws.com', user: "#{fetch(:deploy_user)}", roles: %w{app web monitor}, my_property: :my_value
 server 'ec2-54-199-222-155.ap-northeast-1.compute.amazonaws.com', user: "#{fetch(:deploy_user)}", roles: %w{app web}, my_property: :my_value
 
 

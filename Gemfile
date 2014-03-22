@@ -7,3 +7,5 @@ gem 'capistrano-rbenv'
 
 # integrate bundler with capistrano
 gem 'capistrano-bundler'
+
+gem 'cap-ec2'
