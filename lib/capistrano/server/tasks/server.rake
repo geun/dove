@@ -1,4 +1,12 @@
-namespace :ubuntu do
+namespace :server do
+  desc "Install common things"
+  task :install do
+    on roles(:all) do
+      execute :sudo, "apt-get -y update"
+      execute :sudo, "apt-get -y install software-properties-common"
+      execute :sudo, "apt-get -y install python-software-properties"
+    end
+  end
 
   desc "Configure Server Default"
   task :setup do

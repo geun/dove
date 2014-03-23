@@ -1,0 +1,1 @@
+load File.expand_path("../tasks/haproxy.rake", __FILE__)

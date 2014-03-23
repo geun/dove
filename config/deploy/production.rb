@@ -1,5 +1,3 @@
-require 'capistrano/rbenv'
-
 set :stage, :production
 set :branch, "master"
 

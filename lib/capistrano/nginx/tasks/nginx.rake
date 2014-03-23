@@ -41,10 +41,6 @@ namespace :nginx do
       execute :sudo, "rm -f /etc/nginx/sites-enabled/default"
       restart
     end
-
-
-
-
   end
   #after "deploy:setup", "nginx:setup"
 
