@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
   gem.version     = Capistrano::Dove::VERSION
   gem.date        = '2014-03-21'
   gem.summary     = "for deployment"
-  gem.description = "for deployment"
+  gem.description = "for deployment111"
   gem.authors     = ["Geun"]
   gem.email       = ["geunbaelee@gmail.com"]
   gem.homepage    = 'https://github.com/geun/dove'
@@ -22,6 +22,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'capistrano-bundler', '~> 1.1'
   gem.add_dependency 'hiera', '~> 1.3.2' #lastest version
   gem.add_dependency 'sshkit', '~> 1.3'
+  gem.add_dependency 'colorize', '~> 0.7.0'
   gem.add_dependency 'colorize', '~> 0.7.0'
 
   gem.post_install_message = <<eos
