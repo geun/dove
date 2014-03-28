@@ -1,34 +1,42 @@
-Dove
-=============
+# Dove
 
+Dove is a full rails stack for startup. It make devops easily 
 deployment script for rails using capistrano to amazon ec2
 
 
 ## Installation
 Add this line to your application's Gemfile:
+             
+	gem 'dove', github: "geun/dove"
 
-``` ruby 
-gem 'dove', github: "geun/dove"
-```
 
 And then execute :
-``` bundle install
 
-Stack
-============
-
-rails
-nginx 
-puma 
-redis
-postgresql
-elastic search 
-logstash
-collected
+	bundle install
 
 
-Iterations
-=============
+
+## Stack
+
+- rails
+- nginx 
+- puma 
+- redis
+- haproxy 
+- postgresql
+- elastic search 
+- logstash
+- collectd
+- puppet
+- hiera 
+- mosquitto 
+- monit 
+- jenkins 
+
+
+
+## Development Iterations
+
 iteration 1. capistrano 3 deployment with recipes
              - installation using ssh
              - code update using capistrano 
