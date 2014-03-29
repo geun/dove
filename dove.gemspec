@@ -23,7 +23,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'hiera', '~> 1.3.2' #lastest version
   gem.add_dependency 'sshkit', '~> 1.3'
   gem.add_dependency 'colorize', '~> 0.7.0'
-  gem.add_dependency 'colorize', '~> 0.7.0'
 
   gem.post_install_message = <<eos
 have a good time!

@@ -15,7 +15,6 @@ And then execute :
 	bundle install
 
 
-
 ## Stack
 
 - rails
@@ -32,7 +31,6 @@ And then execute :
 - mosquitto 
 - monit 
 - jenkins 
-
 
 
 ## Development Iterations
