@@ -49,7 +49,6 @@ namespace :server do
       execute :locale
     end
   end
-  after "ubuntu:setup", "ubuntu:locale"
 
   task :build do
     on roles(:all), in: :parallel do |host|
