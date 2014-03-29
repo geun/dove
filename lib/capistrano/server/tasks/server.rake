@@ -1,4 +1,4 @@
-namespace :server do
+namespace :ubuntu do
   desc "Install common things"
   task :install do
     on roles(:all) do

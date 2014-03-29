@@ -3,7 +3,23 @@ require 'erb'
 
 module Dove
   module Utils
-    module Helpers
+
+    module Colorize
+      # color output
+      def cap_info message
+        puts " INFO #{message}".colorize(:cyan)
+      end
+
+      def cap_warn message
+        puts " WARN #{message}".colorize(:yellow)
+      end
+
+      def cap_error message
+        puts " ERROR #{message}".colorize(:red)
+      end
+    end
+
+    module Template
       def smart_template(from, to)
         #full_to_path = "#{shared_path}/config/#{to}"
         if from_erb_path = template_file(from)
@@ -43,19 +59,6 @@ module Dove
         end
       end
 
-      # color output
-      def cap_info message
-        puts " INFO #{message}".colorize(:cyan)
-      end
-
-      def cap_warn message
-        puts " WARN #{message}".colorize(:yellow)
-      end
-
-      def cap_error message
-        puts " ERROR #{message}".colorize(:red)
-      end
-
       # Upload and Move
       def upload_and_move source, destination
         if File.exists?(source)
@@ -68,5 +71,6 @@ module Dove
   end
 end
 
-include Dove::Utils::Helpers
+include Dove::Utils::Template
+include Dove::Utils::Colorize
 

@@ -1,17 +1,16 @@
 namespace :nginx do
   desc "Install latest stable release of nginx"
   task :install do
-      on roles(:web) do
+      on roles(:nginx) do
         execute :sudo, "echo", "add-apt-repository ppa:nginx/stable"
         execute :sudo, "apt-get -y update"
         execute :sudo, "apt-get -y install nginx"
     end
-
   end
-  after "deploy:install", "nginx:install"
+  after "provisioning:ssh", "nginx:install"
 
   task :ipv6 do
-    on roles(:web) do
+    on roles(:nginx) do
       execute :sudo, "sed -i 's/default_server/ipv6only=on default_server/g' /etc/nginx/sites-enabled/default"
     end
   end
@@ -27,7 +26,7 @@ namespace :nginx do
 
   desc "Setup nginx configuration for this application"
   task :setup do
-    on roles(:web) do
+    on roles(:nginx) do
       application = fetch(:application)
       #template "nginx_unicorn.erb", "/tmp/nginx_#{application}_site" #default
       smart_template "nginx_unicorn_faye.erb", "/tmp/nginx_#{application}_site" #with faye websocket
@@ -47,7 +46,7 @@ namespace :nginx do
   %w[start stop restart].each do |command|
     desc "#{command} nginx"
     task command do
-      on roles(:web) do
+      on roles(:nginx) do
         execute :sudo, "service nginx #{command}"
       end
 
