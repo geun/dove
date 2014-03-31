@@ -1,6 +1,7 @@
 namespace :ubuntu do
   desc "Install common things"
   task :install do
+    invoke 'ubuntu:repo'
     on roles(:all) do
       execute :sudo, "apt-get -y update"
       execute :sudo, "apt-get -y install software-properties-common"
@@ -10,16 +11,17 @@ namespace :ubuntu do
 
   desc "Configure Server Default"
   task :setup do
-    invoke 'ubuntu:add_user'
+    invoke 'ubuntu:sudo_user'
     invoke 'ubuntu:locale'
     invoke 'ubuntu:build'
   end
 
   desc "Set user group in sudo to make easy to install"
-  task :add_user do
+  task :sudo_user do
     on roles(:all), in: :parallel do |host|
-      user = fetch(:deploy_user)
-      #execute :sudo, "adduser deploy"
+      user = fetch(:user)
+      #password = ask("#{user}'s password : ", nil )
+      #execute :sudo, "adduser #{user} --disabled-password"
       execute :sudo, "usermod -a -G sudo #{user}"
       execute :sudo, "cp /etc/sudoers /etc/sudoers.bak"
       execute :sudo, "cat /etc/sudoers > ~/x19fhsgud98fys7d"
@@ -34,6 +36,7 @@ namespace :ubuntu do
   task :repo do
     on roles(:all), in: :parallel do |host|
       execute :sudo, "sed -i 's/kr.archive.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list"
+      execute :sudo, "sed -i 's/us.archive.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list"
       execute :sudo, "apt-get -y update"
     end
   end

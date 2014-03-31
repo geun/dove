@@ -1,9 +1,11 @@
+require 'capistrano/server/ubuntu'
+
 namespace :provisioning do
 
   desc 'Install server via sshkit'
   task :ssh do
-    invoke 'server:install'
-    invoke 'server:setup'
+    invoke 'ubuntu:install'
+    invoke 'ubuntu:setup'
   end
 
   desc 'Install server via puppet'

@@ -1,5 +1,6 @@
 require 'colorize'
 require 'erb'
+require 'pathname'
 
 module Dove
   module Utils
@@ -40,14 +41,32 @@ module Dove
         return nil
       end
 
-      def local_copy_template(name)
-        root = capture(:pwd)
-        template_path = "#{root}/lib/capistrano/templates"
-        target_path = "#{root}/config/deploy/templates/"
-        unless test("[ -e #{target_path} ]")
-          execute :mkdir, "#{root}/config/deploy/templates/"
+
+
+      def local_copy_template(app, filename, force = false)
+        config_dir = Pathname.new('config')
+        target_path = config_dir.join('deploy/templates')
+
+        unless Dir.exist?(target_path)
+          mkdir_p target_path
+          cap_info "create tempates folder"
         end
-        execute :cp, "#{template_path}/#{name}", target_path
+
+        template_path = File.expand_path("../../../#{app}/templates/#{filename}", __FILE__)
+
+        cap_info "copy #{filename} to #{target_path} #{if force then 'with force' else '' end}"
+
+        if File.exist?(template_path) && !force
+          cap_error "#{filename} is already exist, please check the command"
+          return
+        end
+
+        FileUtils.cp(template_path, target_path)
+
+        #unless test("[ -e #{target_path} ]")
+        #  execute :mkdir, "#{root}/config/deploy/templates/"
+        #end
+        #execute :cp, "#{template_path}/#{name}", target_path
       end
 
       # Renders a template
