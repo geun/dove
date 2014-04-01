@@ -35,8 +35,14 @@ namespace :ubuntu do
   desc 'Change repository to ftp.daum.net'
   task :repo do
     on roles(:all), in: :parallel do |host|
-      execute :sudo, "sed -i 's/kr.archive.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list"
-      execute :sudo, "sed -i 's/us.archive.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list"
+
+      #version 12.10
+      #execute :sudo, "sed -i 's/kr.archive.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list"
+      #execute :sudo, "sed -i 's/us.archive.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list"
+
+      #version 13.10
+      execute :sudo, "sed -i 's/archive.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list"
+      execute :sudo, "sed -i 's/security.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list"
       execute :sudo, "apt-get -y update"
     end
   end

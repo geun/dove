@@ -1,0 +1,19 @@
+global<% fetch(:haproxy_global).each do |name, global_defs|
+  [ global_defs ].flatten.each do |d| %>
+        <%= name %> <%= d %>
+    <% end %>
+<% end %>
+
+defaults<% fetch(:haproxy_defaults).each do |name, defaults_defs|
+  [ defaults_defs ].flatten.each do |d| %>
+        <%= name %> <%= d %>
+    <% end %>
+<% end %>
+
+<% fetch(:haproxy_listens).each do |listen_name, listen_defs| %>
+    listen <%= listen_name %><% listen_defs.each do |param_name, param_defs|
+        [ param_defs ].flatten.each do |d| %>
+            <%= param_name %> <%= d %>
+        <% end %>
+    <% end %>
+<% end %>

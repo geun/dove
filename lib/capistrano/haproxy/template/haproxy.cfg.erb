@@ -1,0 +1,54 @@
+global
+    maxconn 4096 # Max simultaneous connections from an upstream server
+    spread-checks 5 # Distribute health checks with some randomness
+    log 127.0.0.1 local0
+    log 127.0.0.1 local1 notice
+    user haproxy
+    group haproxy
+    uid 99
+    gid 99
+    daemon
+    log-send-hostname
+    #debug # Uncomment for verbose logging
+
+defaults
+    log     global
+    mode    http
+    balance roundrobin
+    option  forwardfor # insert x-forwarded-for header so that app servers can see both proxy and client IPs
+    option  redispatch # any server can handle any session
+    option  abortonclose # abort request if client closes output channel while waiting
+    option  httpclose # add "Connection:close" header if it is missing
+    option  httplog
+    option  dontlognull
+    retries 3
+    option redispatch
+    timeout connect  5000
+    timeout client  10000
+    timeout server  10000
+
+listen stats 127.0.0.1:8080
+    stats enable
+    stats realm Haproxy\ Statistics
+    stats uri /stats
+    stats auth admin:admin
+
+frontend http-in
+    bind *:8000
+    option log-health-checks
+
+    #acl sharingthetech path_beg /tech
+    #acl rails_app path /api /api/ /tools/browser /tools/browser/
+    #acl static hdr_dom(host) -i blog.chattingcat.com
+
+    #use_backend blog_static if static
+    #use_backend puma-cluster if rails_app
+
+    default_backend puma-cluster
+
+backend puma-cluster
+    option httpchk GET /health_check HTTP/1.0
+    server puma01 127.0.0.1:8001 check
+    #server puma02 127.0.0.1:8001 check
+    #server puma03 127.0.0.1:8001 check
+    #server puma04 127.0.0.1:8001 check

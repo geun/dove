@@ -40,16 +40,18 @@ namespace :nginx do
         execute :sudo, "echo", "add-apt-repository ppa:nginx/stable"
         execute :sudo, "apt-get -y update"
         execute :sudo, "apt-get -y install nginx"
-    end
+      end
+      invoke 'nginx:ipv6'
   end
-  after "provisioning:ssh", "nginx:install"
+  #after "provisioning:ssh", "nginx:install"
+
 
   task :ipv6 do
     on roles(:nginx) do
       execute :sudo, "sed -i 's/default_server/ipv6only=on default_server/g' /etc/nginx/sites-enabled/default"
     end
   end
-  after "nginx:install", "nginx:ipv6"
+  #after "nginx:install", "nginx:ipv6"
 
   desc "Setup nginx configuration for this application"
   task :setup do
@@ -67,8 +69,6 @@ namespace :nginx do
       execute :sudo, "rm -f /etc/nginx/sites-enabled/default"
       restart
     end
-  end
-
   end
   #after "deploy:setup", "nginx:setup"
 
