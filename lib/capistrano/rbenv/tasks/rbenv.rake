@@ -1,37 +1,49 @@
+set :rbenv_type, :user # or :system, depends on your rbenv setup
+set :rbenv_ruby, '2.0.0-p247'
+set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
+set :rbenv_map_bins, %w{rake gem bundle ruby rails}
+set :rbenv_roles, :all # default value
+set :rbenv_bootstrap, "bootstrap-ubuntu-12-04"
+
 namespace :rbenv do
   desc "Install rbenv, Ruby, and the Bundler gem"
-  task :install, roles: :app do
-    run "#{sudo} apt-get -y install curl git-core"
-    run "curl -L https://raw.github.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash"
-    bashrc = <<-BASHRC
+  task :install do
+    on roles(:all) do
+      execute :sudo, %w(apt-get -y install curl git-core)
+      execute :sudo, "curl -L https://raw.github.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash"
+
+      bashrc = StringIO.new <<-BASHRC
 if [ -d $HOME/.rbenv ]; then
   export PATH="$HOME/.rbenv/bin:$PATH"
   eval "$(rbenv init -)"
 fi
-    BASHRC
-    put bashrc, "/tmp/rbenvrc"
-    run "cat /tmp/rbenvrc ~/.bashrc > ~/.bashrc.tmp"
-    run "mv ~/.bashrc.tmp ~/.bashrc"
-    run %q{export PATH="$HOME/.rbenv/bin:$PATH"}
-    run %q{eval "$(rbenv init -)"}
-
-    run "rbenv #{rbenv_bootstrap}", pty: true do |ch, stream, data|
-      press_yes( ch, stream, data)
+      BASHRC
+      upload! bashrc, "/tmp/rbenvrc"
+      execute "cat /tmp/rbenvrc ~/.bashrc > ~/.bashrc.tmp"
+      execute "mv ~/.bashrc.tmp ~/.bashrc"
+      execute %q{export PATH="$HOME/.rbenv/bin:$PATH"}
+      execute %q{eval "$(rbenv init -)"}
+      execute "rbenv #{fetch(:rbenv_bootstrap)}"
+      execute "rbenv install #{fetch(:rbenv_ruby)}"
+      execute "rbenv global #{fetch(:rbenv_ruby)}"
+      execute "gem install bundler --no-ri --no-rdoc"
+      #run "gem install bundler --no-ri --no-rdoc"
+      execute "rbenv rehash"
     end
-    run "rbenv install #{ruby_version}"
-    run "rbenv global #{ruby_version}"
-    run "gem install bundler --no-ri --no-rdoc"
-    #run "gem install bundler --no-ri --no-rdoc"
-    run "rbenv rehash"
   end
+
   #after "deploy:install", "rbenv:install"
 
-  task :rehash, roles: :app do
-    run "rbenv rehash"
+
+  desc "rehash rbenv"
+  task :rehash do
+    on roles(:all)  do
+      execute :rbenv, "rehash"
+    end
   end
+end
 
-
-
+namespace :rbenv do
   task :validate do
     on roles(fetch(:rbenv_roles)) do
       rbenv_ruby = fetch(:rbenv_ruby)
@@ -55,5 +67,28 @@ fi
     fetch(:rbenv_map_bins).each do |command|
       SSHKit.config.command_map.prefix[command.to_sym].unshift(rbenv_prefix)
     end
+  end
+end
+
+Capistrano::DSL.stages.each do |stage|
+  #after stage, 'rbenv:validate'
+  after stage, 'rbenv:map_bins'
+end
+
+namespace :load do
+  task :defaults do
+    set :rbenv_path, -> {
+      rbenv_path = fetch(:rbenv_custom_path)
+      rbenv_path ||= if fetch(:rbenv_type, :user) == :system
+                       "/usr/local/rbenv"
+                     else
+                       "~/.rbenv"
+                     end
+    }
+
+    set :rbenv_roles, fetch(:rbenv_roles, :all)
+
+    set :rbenv_ruby_dir, -> { "#{fetch(:rbenv_path)}/versions/#{fetch(:rbenv_ruby)}" }
+    set :rbenv_map_bins, %w{rake gem bundle ruby rails}
   end
 end
