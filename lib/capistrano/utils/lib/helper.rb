@@ -56,7 +56,7 @@ module Dove
 
         cap_info "copy #{filename} to #{target_path} #{if force then 'with force' else '' end}"
 
-        if File.exist?(template_path) && !force
+        if File.exist?("#{target_path}/#{filename}") && !force
           cap_error "#{filename} is already exist, please check the command"
           return
         end
@@ -78,12 +78,17 @@ module Dove
         end
       end
 
+      def move(source, destination)
+        execute :sudo, "mv #{source} #{destination}"
+      end
+
       # Upload and Move
       def upload_and_move source, destination
         if File.exists?(source)
           file = File.basename(source)
-          upload! source, './'
-          sudo "mv ./#{file} #{destination}"
+          upload! source, "/tmp/#{file}"
+          move("/tmp/#{file}", destination)
+          #sudo "mv ./#{file} #{destination}"
         end
       end
     end

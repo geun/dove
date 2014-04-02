@@ -1,0 +1,28 @@
+{
+    "network": {
+        "servers": [ "localhost:5043" ],
+        "ssl certificate": "<%= fetch(:ssl_certificate_dir) %>/<%= fetch(:logstash_ssl_key) %>.crt",
+        "ssl key": "<%= fetch(:ssl_key_dir) %>/<%= fetch(:logstash_ssl_key) %>.key",
+        "ssl ca": "<%= fetch(:ssl_certificate_dir) %>/<%= fetch(:logstash_ssl_key) %>.crt",
+        "timeout": 30
+    },
+    "files": [
+        {
+            "paths": [
+                "/var/log/messages",
+                "/var/log/*.log"
+            ],
+            "fields": { "type": "syslog" }
+        },
+        {
+            "paths": [ "-" ],
+            "fields": { "type": "stdin" }
+        },
+        {
+            "paths": [
+                "/var/log/apache/httpd-*.log"
+            ],
+            "fields": { "type": "apache" }
+        }
+    ]
+}

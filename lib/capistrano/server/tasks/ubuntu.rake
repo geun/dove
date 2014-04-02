@@ -61,7 +61,7 @@ namespace :ubuntu do
 
   task :build do
     on roles(:all), in: :parallel do |host|
-      execute :sudo, "apt-get -y install linux-headers-server build-essential"
+      execute :sudo, "apt-get -y install linux-headers-server build-essential zip unzip"
     end
   end
 end

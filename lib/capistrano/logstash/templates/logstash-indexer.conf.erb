@@ -1,0 +1,20 @@
+input {
+    lumberjack {
+        port => 5043
+        type => "syslog"
+        ssl_certificate => "<%= fetch(:ssl_certificate_dir) %>/<%= fetch(:logstash_ssl_key) %>.crt"
+        ssl_key => "<%= fetch(:ssl_key_dir) %>/<%= fetch(:logstash_ssl_key) %>.key"
+    }
+}
+
+output {
+    # Output events to stdout for debugging. Feel free to remove
+    # this output if you don't need it.
+    #stdout { debug => true debug_format => "json" }
+    stdout {
+        codec => rubydebug
+    }
+    elasticsearch {
+        host => localhost
+    }
+}
