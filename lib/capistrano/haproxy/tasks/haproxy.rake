@@ -47,11 +47,11 @@ namespace :haproxy do
 
 
 
-  desc "initiailze nginx config"
+  desc "initiailze haproxy config"
   task :initialize, [:force_copy] do |task, args|
     is_force =  args[:force_copy].to_bool unless args[:force_copy].nil?
-    local_copy_template :haproxy, 'nginx_unicorn_faye.erb', is_force
-    local_copy_template :nginx, "nginx.erb", is_force
+    local_copy_template :haproxy, 'haproxy.cfg.erb', is_force
+    local_copy_template :haproxy, "haproxy.erb", is_force
   end
 
 

@@ -60,13 +60,20 @@ namespace :nginx do
       #template "nginx_unicorn.erb", "/tmp/nginx_#{application}_site" #default
       smart_template "nginx_unicorn_faye.erb", "/tmp/nginx_#{application}_site" #with faye websocket
       smart_template "nginx.erb", "/tmp/nginx_conf"
-
+      #
       #template "nginx_puma_conf.erb", "/tmp/nginx_conf"
       #template "nginx_puma_site.erb", "/tmp/nginx_#{application}_site"
-      execute :sudo, "mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.#{Time.now.utc.strftime("%Y-%m-%d_%I:%M")}.backup"
+
+      if test("[ -e /etc/nginx/nginx.conf ]")
+        execute :sudo, "mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.#{Time.now.utc.strftime("%Y-%m-%d_%I:%M")}.backup"
+      end
       execute :sudo, "mv /tmp/nginx_conf /etc/nginx/nginx.conf"
       execute :sudo, "mv /tmp/nginx_#{application}_site /etc/nginx/sites-enabled/#{application}"
-      execute :sudo, "rm -f /etc/nginx/sites-enabled/default"
+
+      if test("[ -e /etc/nginx/sites-enabled/default ]")
+        execute :sudo, "rm -f /etc/nginx/sites-enabled/default"
+      end
+
       restart
     end
   end
