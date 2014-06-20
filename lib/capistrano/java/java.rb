@@ -1,1 +1,1 @@
-load File.expand_path("../tasks/java.rake", __FILE__)
+load File.expand_path("../tasks/oracle.rake", __FILE__)

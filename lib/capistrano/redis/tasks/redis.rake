@@ -7,7 +7,6 @@ namespace :redis do
        execute :sudo, %w(apt-get -y install redis-server)
      end
   end
-
   #after "deploy:install", "redis:install"
 
   %w[start stop restart].each do |command|

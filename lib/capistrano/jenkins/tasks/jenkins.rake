@@ -1,15 +1,12 @@
 namespace :load do
 
   namespace :defaults do
-
     set :jenkins_proxy_config, "nginx_jenkins.erb"
   end
 
 end
 
-
 namespace :jenkins do
-
 
   task :install do
     on roles(:jenkins) do
