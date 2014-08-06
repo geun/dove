@@ -6,15 +6,15 @@ namespace :torquebox do
 
       # execute :sudo, "apt-get -y update"
       # execute :sudo, "apt-get -y install wget unzip"
-      unless test "[ -e ~/torquebox-dist-3.1.0-bin.zip ]"
-        execute :wget, "http://torquebox.org/release/org/torquebox/torquebox-dist/3.1.0/torquebox-dist-3.1.0-bin.zip"
+      unless test "[ -e ~/torquebox-dist-3.1.1-bin.zip ]"
+        execute :wget, "http://torquebox.org/release/org/torquebox/torquebox-dist/3.1.1/torquebox-dist-3.1.1-bin.zip"
       end
 
-      execute :unzip, "torquebox-dist-3.1.0-bin.zip -d ~"
+      execute :unzip, "torquebox-dist-3.1.1-bin.zip -d ~"
       if test "[ -d #{fetch(:torquebox_home)} ]"
         execute :sudo, "rm -rf #{fetch(:torquebox_home)}"
       end
-      execute :sudo, "mv ~/torquebox-3.1.0 #{fetch(:torquebox_home)}"
+      execute :sudo, "mv ~/torquebox-3.1.1 #{fetch(:torquebox_home)}"
 
       unless test "[ -d #{shared_path.join('pid')} ]"
         execute :mkdir, "-pv #{shared_path.join('pid')}"
