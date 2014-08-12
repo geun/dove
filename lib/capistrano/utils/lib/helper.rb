@@ -1,6 +1,7 @@
 require 'colorize'
 require 'erb'
 require 'pathname'
+require 'pp'
 
 module Dove
   module Utils
@@ -33,7 +34,7 @@ module Dove
       end
 
       def template_file(name)
-        if File.exist?((file = "config/deploy/#{fetch(:full_app_name)}/#{name}.erb"))
+        if File.exist?((file = "config/deploy/#{fetch(:full_app_name)}/#{name}"))
           return file
         elsif File.exist?((file = "config/deploy/templates/#{name}"))
           return file

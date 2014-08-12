@@ -125,6 +125,8 @@ namespace :postgresql do
   # after "deploy:finalize_update", "postgresql:symlink"
   after 'deploy:started', 'postgresql:symlink'
 
+
+
   # desc "database console"
   # task :console, roles: :db do
   #   auth = capture "cat #{shared_path}/config/database.yml"

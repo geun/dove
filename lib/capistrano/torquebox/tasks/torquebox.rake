@@ -22,7 +22,6 @@ namespace :torquebox do
       unless test "[ -d #{shared_path.join('log')} ]"
         execute :mkdir, "-pv #{shared_path.join('log')}"
       end
-
     end
   end
 
@@ -65,6 +64,9 @@ namespace :torquebox do
           execute :sudo, "mv /tmp/torquebox.conf #{fetch(:jboss_upstart_script)}"
       end
 
+      smart_template "#{fetch(:jboss_standalone_config)}", "/tmp/standalone.conf"
+      execute :sudo, "mv /tmp/standalone.conf #{fetch(:jboss_home)}/bin"
+
       bash_profile = StringIO.new <<-BASH
 export PATH=/usr/lib/postgresql/9.3/bin:/bin:/usr/local/bin:/usr/bin:$PATH
 export TORQUEBOX_HOME="#{fetch(:torquebox_home)}"
@@ -72,11 +74,12 @@ export JBOSS_HOME="#{fetch(:jboss_home)}"
 export JRUBY_OPTS="-J-XX:ReservedCodeCacheSize=256m -J-Xmn1048m -J-Xms2048m -J-Xmx2048m -J-server"
 export JRUBY_OPTS="-Xcompile.invokedynamic=false -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-noverify -Xcompile.mode=OFF $JRUBY_OPTS"
 if [ -f ~/.bashrc ]; then
-   source ~/.bashrc
+   source ~/.profile
 fi
       BASH
       upload! bash_profile, "/tmp/bash_profile"
       execute "cat /tmp/bash_profile > ~/.bash_profile"
+      execute "source ~/.bash_profile"
 
     end
   end
@@ -99,8 +102,6 @@ fi
           execute :sudo, "rm #{fetch(:jboss_upstart_script)}"
       end
     end
-
-
   end
 end
 
@@ -119,6 +120,24 @@ namespace :torquebox do
           execute :sudo, "sv start torquebox"
         when 'upstart'
           execute :sudo, "service torquebox start"
+      end
+    end
+  end
+
+  task :force_stop do
+    on roles(:app), in: :sequence, wait: 5 do
+      cap_info "Force stop torqubox as"
+      cap_info "********* Stopping JBoss Server by killing the process **********";
+      execute "ps -e | grep jboss | grep -v grep | awk '{print $1}' | xargs killall"
+      cap_info "********* Stopped JBoss Server by killing the process **********";
+    end
+  end
+
+  desc "Hot-restart the server"
+  task :hot_restart do
+    on roles(:app), in: :sequence, wait: 60 do
+      within latest_release do
+        execute :touch, 'tmp/restart.txt'
       end
     end
   end
@@ -229,14 +248,14 @@ namespace :torquebox do
   end
 end
 
-namespace :deploy do
-  desc "Restart Application"
-  task :restart do
-    on roles(:app), in: :sequence, wait: 5 do
-      execute "touch #{fetch(:jboss_home)}/standalone/deployments/#{fetch(:torquebox_app_name, fetch(:application))}-knob.yml.dodeploy"
-    end
-  end
-end
+# namespace :deploy do
+#   desc "Restart Application"
+#   task :restart do
+#     on roles(:app), in: :sequence, wait: 5 do
+#       execute "touch #{fetch(:jboss_home)}/standalone/deployments/#{fetch(:torquebox_app_name, fetch(:application))}-knob.yml.dodeploy"
+#     end
+#   end
+# end
 
 before 'deploy:check',             'torquebox:check'
 after  'deploy:symlink:shared',    'torquebox:deployment_descriptor'

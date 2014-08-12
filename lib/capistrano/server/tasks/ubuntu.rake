@@ -41,9 +41,9 @@ namespace :ubuntu do
       #execute :sudo, "sed -i 's/us.archive.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list"
 
       #version 13.10
-      execute :sudo, "sed -i 's/archive.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list"
-      execute :sudo, "sed -i 's/security.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list"
-      execute :sudo, "apt-get -y update"
+      # execute :sudo, "sed -i 's/archive.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list"
+      # execute :sudo, "sed -i 's/security.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list"
+      # execute :sudo, "apt-get -y update"
     end
   end
 
