@@ -24,8 +24,8 @@ namespace :static do
     task :deploy, [:path, :app_name] do |t, args|
       app_name = args[:app_name]
       root_path = args[:path]
-      invoke "static:yeoman:clear", app_name
       invoke "static:yeoman:local_build", root_path, app_name
+      invoke "static:yeoman:clear", app_name
       invoke "static:yeoman:upload", root_path, app_name
     end
 

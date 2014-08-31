@@ -15,6 +15,7 @@ namespace :load do
     set :nginx_config_path, "/etc/nginx/sites-available"
 
     set :nginx_config, "nginx.erb"
+    set :nginx_mime_type, "mime.types.erb"
 
     # set :unicorn_service_name, -> { "unicorn_#{fetch(:application)}_#{fetch(:stage)}" }
     # set :unicorn_pid, -> { shared_path.join("pids/unicorn.pid") }

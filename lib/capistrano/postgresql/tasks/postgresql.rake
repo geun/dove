@@ -98,6 +98,7 @@ namespace :postgresql do
 
   desc "config database.yml"
   task :config_database do
+    password = fetch(:postgresql_password)
     on roles(:app) do
       database_file = shared_path.join('config/database.yml')
       unless test "[ -d #{database_file} ]"

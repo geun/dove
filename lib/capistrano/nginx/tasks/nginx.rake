@@ -29,11 +29,13 @@ namespace :nginx do
     on roles(:web) do
       application = fetch(:application)
       smart_template fetch(:nginx_config), "/tmp/nginx_conf"
+      smart_template fetch(:nginx_mime_type), "/tmp/mime.types"
 
       if test("[ -e /etc/nginx/nginx.conf ]")
         execute :sudo, "mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.#{Time.now.utc.strftime("%Y-%m-%d_%I:%M")}.backup"
       end
       execute :sudo, "mv /tmp/nginx_conf /etc/nginx/nginx.conf"
+      execute :sudo, "mv /tmp/mime.types /etc/nginx/mime.types"
       if test("[ -e /etc/nginx/sites-enabled/default ]")
         execute :sudo, "rm -f /etc/nginx/sites-enabled/default"
       end
