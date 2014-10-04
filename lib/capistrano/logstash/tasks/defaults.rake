@@ -2,7 +2,7 @@ namespace :load do
   task :defaults do
     #set :logstash_deb_url, "https://github.com/geun/logstash-forwarder-deb/blob/master/logstash-forwarder_0.3.1_amd64.deb"
 
-    set :logstash_version, "1.4.0-1-c82dc09"
+    set :logstash_version, "1.4.2"
     set :logstash_deb_url, "https://download.elasticsearch.org/logstash/logstash/packages/debian/logstash_#{fetch(:logstash_version)}_all.deb"
     set :logstash_config_dir, "/etc/logstash/conf.d"
 

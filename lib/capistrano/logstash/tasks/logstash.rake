@@ -2,8 +2,9 @@ namespace :logstash do
 
   task :install do
     on roles(:logstash_indexer) do
-      execute "wget #{fetch(:logstash_deb_url)} -O /tmp/logstash.deb"
-      execute :sudo, "dpkg -i /tmp/logstash.deb"
+      # execute "echo 'deb http://packages.elasticsearch.org/logstash/1.4/debian stable main' | sudo tee /etc/apt/sources.list.d/logstash.list"
+      # execute :sudo, "apt-get update"
+      execute :sudo, "apt-get -y --force-yes install logstash=1.4.2-1-2c0f5a1"
     end
   end
 
