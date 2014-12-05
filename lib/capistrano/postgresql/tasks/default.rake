@@ -18,5 +18,6 @@ namespace :load do
     set :pg_hba_conf, "pg_hba-9.3.conf.erb"
     set :pg_conf, "postgresql-9.3.conf.erb"
     set :database_conf, "postgresql.yml.erb"
+    set :database_shards_conf, "shards.yml.erb"
   end
 end

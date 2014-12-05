@@ -111,7 +111,7 @@ end
 namespace :torquebox do
   desc "Start TorqueBox Server"
   task :start do
-    on roles(:app), in: :sequence, wait: 5 do
+    on roles(:app), in: :sequence, wait: 120 do
       cap_info "Starting TorqueBox AS"
 
       case fetch(:jboss_control_style)
@@ -145,7 +145,7 @@ namespace :torquebox do
 
   desc "Hot-restart the server"
   task :hot_restart, [:target] do |t, args|
-    on roles(:app), in: :sequence, wait: 5 do
+    on roles(:app), in: :sequence, wait: 120 do
       within current_path do
           execute :touch, "tmp/restart-#{args[:target]}.txt"
       end
@@ -172,7 +172,7 @@ namespace :torquebox do
 
   desc "Restart TorqueBox Server"
   task :restart do
-    on roles(:app), in: :sequence, wait: 5 do
+    on roles(:app), in: :sequence, wait: 120 do
       case ( fetch(:jboss_control_style) )
         when 'initd'
           cap_info    "Restarting TorqueBox AS"

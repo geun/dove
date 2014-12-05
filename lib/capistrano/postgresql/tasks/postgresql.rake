@@ -106,6 +106,10 @@ namespace :postgresql do
       end
       smart_template fetch(:database_conf), "/tmp/database.yml"
       execute :sudo, "mv /tmp/database.yml #{database_file}"
+
+      shards_file = shared_path.join('config/shards.yml')
+      smart_template fetch(:database_shards_conf), "/tmp/shards.yml"
+      execute :sudo, "mv /tmp/shards.yml #{shards_file}"
     end
   end
 
@@ -122,6 +126,7 @@ namespace :postgresql do
   desc "Symlink the database.yml file into latest release"
   task :symlink do
     set :linked_files, fetch(:linked_files, []).push('config/database.yml')
+    set :linked_files, fetch(:linked_files, []).push('config/shards.yml')
   end
   # after "deploy:finalize_update", "postgresql:symlink"
   after 'deploy:started', 'postgresql:symlink'

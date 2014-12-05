@@ -1,6 +1,6 @@
 desc "Run rake task on server"
 task :rake do
-  on roles(:app), in: :sequence, wait: 5 do
+  on primary fetch(:migration_role) do
     within current_path do
       with rails_env: fetch(:rails_env) do
         execute :rake, ENV['task']
