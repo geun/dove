@@ -87,6 +87,15 @@ fi
     end
   end
 
+  desc 'set_syslog'
+  task :set_syslog do
+    on roles(:app) do
+      smart_template "#{fetch(:syslog_config)}", "/tmp/rsyslog.conf"
+      execute :sudo, "mv /tmp/rsyslog.conf /etc/rsyslog.conf"
+      execute :sudo, "restart rsyslog"
+    end
+  end
+
   task :remove_setup do
     on roles(:app) do
 
@@ -185,7 +194,8 @@ namespace :torquebox do
           execute :sudo, "sv restart torquebox"
         when 'upstart'
           cap_info    "Restarting TorqueBox AS"
-          execute :sudo, "service torquebox restart"
+          execute :sudo, "service torquebox stop"
+          execute :sudo, "service torquebox start"
       end
     end
   end

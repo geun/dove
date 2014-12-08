@@ -59,13 +59,13 @@ namespace :logstash do
       unless test("[ -d #{fetch(:ssl_certificate_dir)} ]")
         cap_info "create ssl_cert folder"
         execute :sudo, "mkdir -p #{fetch(:ssl_certificate_dir)}"
-        execute :sudo, "chown -R logstash:logstash #{fetch(:ssl_certificate_dir)}"
+        # execute :sudo, "chown -R logstash:logstash #{fetch(:ssl_certificate_dir)}"
       end
 
       unless test("[ -d #{fetch(:ssl_key_dir)} ]")
         cap_info "create ssl_key folder"
         execute :sudo, "mkdir -p #{fetch(:ssl_key_dir)}"
-        execute :sudo, "chown -R logstash:logstash #{fetch(:ssl_key_dir)}"
+        # execute :sudo, "chown -R logstash:logstash #{fetch(:ssl_key_dir)}"
       end
 
       upload_and_move "#{fetch(:logstash_ssl_folder)}/#{fetch(:logstash_ssl_key)}.crt", "#{fetch(:ssl_certificate_dir)}/#{fetch(:logstash_ssl_key)}.crt"

@@ -8,6 +8,7 @@ namespace :load do
     set :jboss_log, ->{ "#{shared_path.join('log')}/torquebox.log" }
     set :jboss_config,  fetch(:jboss_config, "standalone.xml")
     set :jboss_standalone_config,  fetch(:jboss_standalone_config, "standalone.conf.erb")
+    set :syslog_config,  fetch(:syslog_config, "rsyslog.conf.erb")
 
     set :torquebox_home,       fetch(:torquebox_home,       '/opt/torquebox')
     set :jruby_home,           fetch(:jruby_home,           "#{fetch(:torquebox_home)}/jruby")

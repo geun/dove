@@ -10,13 +10,24 @@ namespace :logstash_forwarder do
 
   task :install do
     on roles(:logstash_forwarder) do
-      execute "wget #{fetch(:logstash_forwarder_deb_url)} -O /tmp/logstash-forwarder.zip"
-      execute :sudo, "unzip /tmp/logstash-forwarder.zip -d /tmp/"
 
-      within("/tmp/logstash-forwarder-deb-master") do
-        execute :sudo, "dpkg -i logstash-forwarder_#{fetch(:logstash_forwarder_version)}_amd64.deb"
+      execute :sudo, :echo, "deb http://packages.elasticsearch.org/logstashforwarder/debian stable main | sudo tee /etc/apt/sources.list.d/logstashforwarder.list"
+      execute :sudo, 'apt-get update'
+      execute :sudo, 'apt-get -y --force-yes install logstash-forwarder'
+
+      within("/etc/init.d") do
+        execute :sudo, "wget https://raw.github.com/elasticsearch/logstash-forwarder/master/logstash-forwarder.init -O logstash-forwarder"
+        execute :sudo, "chmod +x logstash-forwarder"
+        execute :sudo, "update-rc.d logstash-forwarder default"
       end
-      execute :sudo, "rm -rf /tmp/logstash-forwarder-deb-master"
+
+      # execute "wget #{fetch(:logstash_forwarder_deb_url)} -O /tmp/logstash-forwarder.zip"
+      # execute :sudo, "unzip /tmp/logstash-forwarder.zip -d /tmp/"
+      #
+      # within("/tmp/logstash-forwarder-deb-master") do
+      #   execute :sudo, "dpkg -i logstash-forwarder_#{fetch(:logstash_forwarder_version)}_amd64.deb"
+      # end
+      # execute :sudo, "rm -rf /tmp/logstash-forwarder-deb-master"
     end
   end
 
