@@ -17,7 +17,7 @@ namespace :jenkins do
       execute "sudo apt-get -y install build-essential bison openssl libreadline5 libreadline-dev curl git-core zlib1g zlib1g-dev libssl-dev libxslt-dev libsqlite3-0 libsqlite3-dev sqlite3 libreadline-dev libxml2-dev autoconf libtool openssh-server"
       execute "sudo apt-get -y install build-essential git-core curl wget openssl libssl-dev libopenssl-ruby libmysqlclient-dev ruby-dev mysql-client libmysql-ruby xvfb firefox libsqlite3-dev libxslt-dev libxml2-dev libicu48"
       execute "sudo aptitude -y install libpq-dev"
-      execute "sudo apt-get -y install postgresql postgresql-client"
+      # execute "sudo apt-get -y install postgresql postgresql-client"
     end
   end
 
@@ -35,10 +35,35 @@ namespace :jenkins do
   desc 'update jenkins config file'
   task :update do
     on roles(:jenkins) do
+
+      if test("[ -e /etc/nginx/sites-enabled/default ]")
+        execute :sudo, "rm -f /etc/nginx/sites-enabled/default"
+      end
+
       smart_template "#{fetch(:jenkins_proxy_config)}", "/tmp/jenkins_config"
       execute :sudo, "mv /tmp/jenkins_config /etc/nginx/sites-enabled/jenkins"
     end
   end
+
+
+  namespace :rails do
+    desc "rails database.yml"
+    task :config_database do
+      password = fetch(:postgresql_password)
+      on roles(:jenkins) do
+          database_file = "/var/lib/jenkins/database.yml"
+          smart_template fetch(:database_conf), "/tmp/database.yml"
+          execute :sudo, "mv /tmp/database.yml #{database_file}"
+          execute :sudo, "chown jenkins:jenkins #{database_file}"
+        # shards_file = "/var/lib/jenkins/shards.yml"
+        # smart_template fetch(:database_shards_conf), "/tmp/shards.yml"
+        # execute :sudo, "mv /tmp/shards.yml #{shards_file}"
+      end
+    end
+
+  end
+
+
 
   task :set_rspec_config do
     #SPEC_OPTS="--format html" rake spec > jenkins/rspec.html

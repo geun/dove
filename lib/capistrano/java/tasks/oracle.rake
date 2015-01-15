@@ -5,7 +5,7 @@ namespace :java do
     desc "Install latest stable release of java of oracle"
     task :install do
 
-      on roles([:app, :elasticsearch, :logstash_indexer]) do
+      on roles([:app, :elasticsearch, :logstash_indexer, :jenkins]) do
         #ls /usr/local/jdk
         #if test("[ -]")
         #execute  :sudo, "apt-add-repository", "ppa:webup8team/jaj"

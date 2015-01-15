@@ -96,6 +96,14 @@ fi
     end
   end
 
+  desc 'remove old data folder'
+  task :remove_old_horentq_data do
+    on roles(:app) do
+      execute :sudo, "rm -rf /opt/torquebox/jboss/standalone/data"
+    end
+  end
+
+
   task :remove_setup do
     on roles(:app) do
 

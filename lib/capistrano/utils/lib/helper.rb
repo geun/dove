@@ -27,9 +27,9 @@ module Dove
         if from_erb_path = template_file(from)
           from_erb = StringIO.new(ERB.new(File.read(from_erb_path)).result(binding))
           upload! from_erb, to
-          info "copying: #{from_erb} to: #{to}"
+          cap_info "copying: #{from_erb} to: #{to}"
         else
-          error "error #{from} not found"
+          cap_error "error #{from} not found"
         end
       end
 
@@ -85,10 +85,12 @@ module Dove
 
       # Upload and Move
       def upload_and_move source, destination
+        cap_info "copying: #{source} to: #{destination} : #{File.exists?(source)}"
         if File.exists?(source)
           file = File.basename(source)
           upload! source, "/tmp/#{file}"
           move("/tmp/#{file}", destination)
+          cap_info "copying: #{source} to: #{destination}"
           #sudo "mv ./#{file} #{destination}"
         end
       end

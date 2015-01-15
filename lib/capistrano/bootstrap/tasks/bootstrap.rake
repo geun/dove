@@ -38,6 +38,11 @@ namespace :bootstrap do
     invoke 'logstash_forwarder:start'
   end
 
+  task :jenkins do
+    invoke 'ubuntu:build'
+
+  end
+
 
 
 end

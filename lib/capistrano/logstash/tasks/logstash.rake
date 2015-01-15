@@ -49,10 +49,11 @@ namespace :logstash do
         cap_info "create ssl_cert folder"
         execute "mkdir ssl_cert"
       end
-      execute :openssl, "req -x509 -batch -nodes -newkey rsa:2048 -keyout #{fetch(:logstash_ssl_folder)}/#{fetch(:logstash_ssl_key)}.key -out #{fetch(:logstash_ssl_folder)}/#{fetch(:logstash_ssl_key)}.crt"
+      execute :openssl, "req -x509 -batch -nodes -newkey rsa:2048 -days 3560 -keyout #{fetch(:logstash_ssl_folder)}/#{fetch(:logstash_ssl_key)}.key -out #{fetch(:logstash_ssl_folder)}/#{fetch(:logstash_ssl_key)}.crt"
     end
   end
 
+  desc 'upload ssl'
   task :upload_ssl do
     on roles([:logstash_forwarder, :logstash_indexer]) do
 

@@ -12,6 +12,7 @@ namespace :nginx do
         execute :sudo, "echo", "add-apt-repository ppa:nginx/stable"
         execute :sudo, "apt-get -y update"
         execute :sudo, "apt-get -y install nginx"
+        execute :sudo, "apt-get -y install nginx-extras"
       end
       invoke 'nginx:ipv6'
   end
