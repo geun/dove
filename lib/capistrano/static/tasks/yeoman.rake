@@ -6,14 +6,16 @@ end
 
 namespace :static do
   namespace :yeoman do
-    task :local_build, [:path, :app_name] do |t, args|
+    task :local_build, [:path, :app_name, :stage] do |t, args|
       app_name = args[:app_name]
       root_path = args[:path]
+      stage = args[:stage]
       filename = "#{app_name}.tar.gz"
       run_locally do
         within root_path do
           execute :rm, "-rf #{filename}" if test("[ -e #{root_path}/#{filename} ]")
           execute :rm, "-rf #{app_name}" if test("[ -d #{root_path}/#{app_name} ]")
+          execute :grunt, stage
           execute :grunt, "build"
           execute :cp, "-r dist #{app_name}"
           execute :tar, "-zcvf #{filename} #{app_name}"
@@ -21,10 +23,11 @@ namespace :static do
       end
     end
 
-    task :deploy, [:path, :app_name] do |t, args|
+    task :deploy, [:path, :app_name, :stage] do |t, args|
       app_name = args[:app_name]
       root_path = args[:path]
-      invoke "static:yeoman:local_build", root_path, app_name
+      stage = args[:stage]
+      invoke "static:yeoman:local_build", root_path, app_name, stage
       invoke "static:yeoman:clear", app_name
       invoke "static:yeoman:upload", root_path, app_name
     end
