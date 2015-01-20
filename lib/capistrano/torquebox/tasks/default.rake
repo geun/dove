@@ -10,6 +10,8 @@ namespace :load do
     set :jboss_standalone_config,  fetch(:jboss_standalone_config, "standalone.conf.erb")
     set :syslog_config,  fetch(:syslog_config, "rsyslog.conf.erb")
 
+    set :stomp_host, ""
+
     set :torquebox_home,       fetch(:torquebox_home,       '/opt/torquebox')
     set :jruby_home,           fetch(:jruby_home,           "#{fetch(:torquebox_home)}/jruby")
     set :jruby_opts,           fetch(:jruby_opts,           "--#{fetch(:app_ruby_version)}" ) if fetch(:app_ruby_version) && !fetch(:jruby_opts)
