@@ -16,7 +16,7 @@ namespace :static do
           execute :rm, "-rf #{filename}" if test("[ -e #{root_path}/#{filename} ]")
           execute :rm, "-rf #{app_name}" if test("[ -d #{root_path}/#{app_name} ]")
           execute :bundle, "exec middleman build --verbose"
-          execute :cp, "-r dist #{app_name}"
+          execute :cp, "-r build #{app_name}"
           execute :tar, "-zcvf #{filename} #{app_name}"
         end
       end
