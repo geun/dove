@@ -17,6 +17,5 @@ namespace :fail2ban do
       end
     end
   end
-
 end
 
