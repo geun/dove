@@ -8,5 +8,15 @@ namespace :fail2ban do
       execute :sudo, "sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local"
     end
   end
+
+  %w[start stop restart].each do |command|
+    desc "#{command} fail2ban"
+    task command do
+      on roles(:all) do
+        execute :sudo, "service nginx #{command}"
+      end
+    end
+  end
+
 end
 
