@@ -1,7 +1,7 @@
 namespace :fail2ban do
 
   desc "Install fail2ban"
-  task :install do
+  task :install, in: :parallel do
     on roles(:all) do
       execute :sudo, "apt-get -y update"
       execute :sudo, "apt-get -y install fail2ban"
