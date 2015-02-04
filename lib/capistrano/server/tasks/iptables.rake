@@ -4,7 +4,7 @@ namespace :iptables do
   task :show, [:options] do |t, args|
     on roles(:all), in: :parallel do
       options = args[:options] ? args[:options] : ''
-      execute sudo, "iptables #{options}"
+      execute :sudo, "iptables #{options}"
     end
   end
 
