@@ -1,8 +1,8 @@
 namespace :fail2ban do
 
   desc "Install fail2ban"
-  task :install, in: :parallel do
-    on roles(:all) do
+  task :install do
+    on roles(:all), in: :parallel do
       execute :sudo, "apt-get -y update"
       execute :sudo, "apt-get -y install fail2ban"
       execute :sudo, "cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local"
