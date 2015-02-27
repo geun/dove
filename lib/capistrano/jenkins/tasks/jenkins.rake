@@ -15,7 +15,7 @@ namespace :jenkins do
       execute "sudo apt-get -y update"
       execute "sudo apt-get -y install jenkins"
       execute "sudo apt-get -y install build-essential bison openssl libreadline5 libreadline-dev curl git-core zlib1g zlib1g-dev libssl-dev libxslt-dev libsqlite3-0 libsqlite3-dev sqlite3 libreadline-dev libxml2-dev autoconf libtool openssh-server"
-      execute "sudo apt-get -y install build-essential git-core curl wget openssl libssl-dev libopenssl-ruby libmysqlclient-dev ruby-dev mysql-client libmysql-ruby xvfb firefox libsqlite3-dev libxslt-dev libxml2-dev libicu48"
+      # execute "sudo apt-get -y install build-essential git-core curl wget openssl libssl-dev libopenssl-ruby libmysqlclient-dev ruby-dev mysql-client libmysql-ruby xvfb firefox libsqlite3-dev libxslt-dev libxml2-dev libicu48"
       execute "sudo aptitude -y install libpq-dev"
       # execute "sudo apt-get -y install postgresql postgresql-client"
     end
