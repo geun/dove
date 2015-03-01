@@ -13,7 +13,7 @@ namespace :fail2ban do
     desc "#{command} fail2ban"
     task command do
       on roles(:all) do
-        execute :sudo, "service nginx #{command}"
+        execute :sudo, "service fail2ban #{command}"
       end
     end
   end
