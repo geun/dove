@@ -1,7 +1,7 @@
 namespace :load do
   task :defaults do
-    set :elasticsearch_version, "1.4.3"
-    set :elasticsearch_deb_url, "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-#{fetch(:elasticsearch_version)}.deb"
+    set :elasticsearch_version, "1.5.1"
+    set :elasticsearch_deb_url, "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-#{fetch(:elasticsearch_version)}.deb"
     set :elasticsearch_bin_path, "/usr/share/elasticsearch/bin"
   end
 end
