@@ -15,11 +15,11 @@ namespace :logstash_forwarder do
       execute :sudo, 'apt-get update'
       execute :sudo, 'apt-get -y --force-yes install logstash-forwarder'
 
-      within("/etc/init.d") do
-        execute :sudo, "wget https://raw.github.com/elasticsearch/logstash-forwarder/master/logstash-forwarder.init -O logstash-forwarder"
-        execute :sudo, "chmod +x logstash-forwarder"
-        execute :sudo, "update-rc.d logstash-forwarder default"
-      end
+      # within("/etc/init.d") do
+      #   execute :sudo, "wget https://raw.github.com/elasticsearch/logstash-forwarder/master/logstash-forwarder.init -O logstash-forwarder"
+      #   execute :sudo, "chmod +x logstash-forwarder"
+      #   execute :sudo, "update-rc.d logstash-forwarder default"
+      # end
 
       # execute "wget #{fetch(:logstash_forwarder_deb_url)} -O /tmp/logstash-forwarder.zip"
       # execute :sudo, "unzip /tmp/logstash-forwarder.zip -d /tmp/"
@@ -28,6 +28,8 @@ namespace :logstash_forwarder do
       #   execute :sudo, "dpkg -i logstash-forwarder_#{fetch(:logstash_forwarder_version)}_amd64.deb"
       # end
       # execute :sudo, "rm -rf /tmp/logstash-forwarder-deb-master"
+
+
     end
   end
 
