@@ -25,7 +25,7 @@ fi
       execute "rbenv #{fetch(:rbenv_bootstrap)}"
       execute "rbenv install #{fetch(:rbenv_ruby)}"
       execute "rbenv global #{fetch(:rbenv_ruby)}"
-      execute "gem install bundler --no-ri --no-rdoc"
+      execute "gem install bundler rake --no-ri --no-rdoc"
       #run "gem install bundler --no-ri --no-rdoc"
       execute "rbenv rehash"
     end
