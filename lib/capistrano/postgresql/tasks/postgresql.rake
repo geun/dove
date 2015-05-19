@@ -75,6 +75,7 @@ namespace :postgresql do
     invoke 'postgresql:config_pg_hba'
     invoke 'postgresql:config_postgresql_conf'
     invoke 'postgresql:config_database'
+    invoke 'postgresql:config_shards'
   end
   # after "deploy:setup", "postgresql:setup"
 
@@ -106,8 +107,17 @@ namespace :postgresql do
       end
       smart_template fetch(:database_conf), "/tmp/database.yml"
       execute :sudo, "mv /tmp/database.yml #{database_file}"
+    end
+  end
 
+  desc "config database.yml"
+  task :config_shards do
+    password = fetch(:postgresql_password)
+    on roles(:app) do
       shards_file = shared_path.join('config/shards.yml')
+      unless test "[ -d #{database_file} ]"
+        execute :mkdir, '-pv',  shared_path.join('config')
+      end
       smart_template fetch(:database_shards_conf), "/tmp/shards.yml"
       execute :sudo, "mv /tmp/shards.yml #{shards_file}"
     end
