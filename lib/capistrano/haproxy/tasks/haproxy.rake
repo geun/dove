@@ -12,7 +12,7 @@ namespace :haproxy do
   desc "Install latest stable release of haproxy"
   task :install do
     on roles(:haproxy) do
-      execute :sudo , "add-apt-repository ppa:vbernat/haproxy-1.5"
+      execute :sudo , "add-apt-repository -y ppa:vbernat/haproxy-1.5"
       execute :sudo, "apt-get update"
       execute :sudo, "apt-get -y install haproxy"
     end
