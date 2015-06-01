@@ -29,7 +29,7 @@ namespace :rails do
     user = fetch(:user)
     port = fetch(:port) || 22
 
-    cap_info "cd #{current_path} && #{command}'"
+    cap_info "cd #{current_path} && #{command}"
     exec "ssh -l #{user} #{host} -p #{port} -t 'cd #{current_path} && #{command}'"
   end
 end
