@@ -115,7 +115,7 @@ namespace :postgresql do
     password = fetch(:postgresql_password)
     on roles(:app) do
       shards_file = shared_path.join('config/shards.yml')
-      unless test "[ -d #{database_file} ]"
+      unless test "[ -d #{shards_file} ]"
         execute :mkdir, '-pv',  shared_path.join('config')
       end
       smart_template fetch(:database_shards_conf), "/tmp/shards.yml"
