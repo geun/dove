@@ -3,6 +3,7 @@ namespace :load do
     set :elasticsearch_version, "1.7.0"
     set :elasticsearch_deb_url, "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-#{fetch(:elasticsearch_version)}.deb"
     set :elasticsearch_bin_path, "/usr/share/elasticsearch/bin"
+    set :elasticsearch_config, "elasticsearch.yml.erb"
   end
 end
 
@@ -32,7 +33,8 @@ namespace :elasticsearch do
 
   task :setup do
     on roles(:elasticsearch) do
-
+      smart_template fetch(:elasticsearch_config), "/tmp/elasticsearch.yml" #with faye websocket
+      execute :sudo, "mv /tmp/elasticsearch.yml /etc/elasticsearch.yml"
     end
   end
 
