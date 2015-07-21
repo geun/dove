@@ -14,7 +14,7 @@ namespace :ubuntu do
   task :setup do
     invoke 'ubuntu:sudo_user'
     invoke 'ubuntu:locale'
-    invoke 'ubuntu:build'
+    # invoke 'ubuntu:build'
   end
 
   desc "Set user group in sudo to make easy to install"
