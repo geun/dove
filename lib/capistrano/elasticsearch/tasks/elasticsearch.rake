@@ -34,7 +34,7 @@ namespace :elasticsearch do
   task :setup do
     on roles(:elasticsearch) do
       smart_template fetch(:elasticsearch_config), "/tmp/elasticsearch.yml" #with faye websocket
-      execute :sudo, "mv /tmp/elasticsearch.yml /etc/elasticsearch.yml"
+      execute :sudo, "mv /tmp/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml"
     end
   end
 
