@@ -3,6 +3,7 @@ namespace :ubuntu do
   task :install do
     invoke 'ubuntu:repo'
     on roles(:all) do
+      execute :sudo, 'export DEBIAN_FRONTEND=noninteractive'
       execute :sudo, "apt-get -yqq update"
       execute :sudo, "apt-get -yqq install software-properties-common"
       execute :sudo, "apt-get -yqq install python-software-properties"
@@ -61,6 +62,7 @@ namespace :ubuntu do
 
   task :build do
     on roles(:all), in: :parallel do |host|
+      execute :sudo, 'export DEBIAN_FRONTEND=noninteractive'
       execute :sudo, "apt-get -yqq install linux-headers-server build-essential zip unzip"
       # execute :sudo, "apt-get -y install clamav*"
     end
