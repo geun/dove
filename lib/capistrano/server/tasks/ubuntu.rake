@@ -3,9 +3,9 @@ namespace :ubuntu do
   task :install do
     invoke 'ubuntu:repo'
     on roles(:all) do
-      execute :sudo, "apt-get -y update"
-      execute :sudo, "apt-get -y install software-properties-common"
-      execute :sudo, "apt-get -y install python-software-properties"
+      execute :sudo, "apt-get -yqq update"
+      execute :sudo, "apt-get -yqq install software-properties-common"
+      execute :sudo, "apt-get -yqq install python-software-properties"
     end
   end
 
@@ -61,7 +61,7 @@ namespace :ubuntu do
 
   task :build do
     on roles(:all), in: :parallel do |host|
-      execute :sudo, "apt-get -y install linux-headers-server build-essential zip unzip"
+      execute :sudo, "apt-get -yqq install linux-headers-server build-essential zip unzip"
       # execute :sudo, "apt-get -y install clamav*"
     end
   end
