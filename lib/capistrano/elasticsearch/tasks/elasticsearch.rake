@@ -1,6 +1,6 @@
 namespace :load do
   task :defaults do
-    set :elasticsearch_version, "1.5.1"
+    set :elasticsearch_version, "1.7.0"
     set :elasticsearch_deb_url, "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-#{fetch(:elasticsearch_version)}.deb"
     set :elasticsearch_bin_path, "/usr/share/elasticsearch/bin"
   end
@@ -22,7 +22,7 @@ namespace :elasticsearch do
         #http://bigdesk.org/v/2.4.0/#nodes
         execute :sudo, :sh, "plugin -install lukas-vlcek/bigdesk"
 
-        execute :sudo, :sh, "plugin -url http://download.elasticsearch.org/kibana/kibana/kibana-latest.zip -install elasticsearch/kibana3"
+        execute :sudo, :sh, "plugin -install elasticsearch/elasticsearch-cloud-aws/2.7.0"
 
         # http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/setup-service.html
         execute :sudo, "update-rc.d elasticsearch defaults 95 10"
