@@ -62,8 +62,7 @@ namespace :ubuntu do
 
   task :build do
     on roles(:all), in: :parallel do |host|
-      execute 'export DEBIAN_FRONTEND=noninteractive'
-      execute :sudo, "apt-get -yqq install linux-headers-server build-essential zip unzip"
+      execute :sudo, "apt-get -yqq -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' install linux-headers-server build-essential zip unzip "
       # execute :sudo, "apt-get -y install clamav*"
     end
   end
