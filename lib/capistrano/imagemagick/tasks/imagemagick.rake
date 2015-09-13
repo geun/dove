@@ -6,5 +6,5 @@ namespace :imagemagick do
       execute "#{sudo} apt-get -y install imagemagick libmagickwand-dev"
     end
   end
-  after "deploy:install", "imagemagick:install"
+  # after "deploy:install", "imagemagick:install"
 end
