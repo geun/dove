@@ -98,7 +98,12 @@ namespace :static do
       app_name = args[:app_name]
       root_path = args[:path]
       filename = "#{app_name}.tar.gz"
-      target_path = "#{root_path}/#{filename}"
+
+      if root_path.nil?
+        target_path = "#{filename}"
+      else
+        target_path = "#{root_path}/#{filename}"
+      end
       deploy_path = fetch(:static_deploy_to)
       cap_info "upload #{target_path} to #{deploy_path}"
       on roles(:web), in: :parallel do |host|
