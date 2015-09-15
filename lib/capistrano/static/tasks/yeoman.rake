@@ -65,14 +65,23 @@ namespace :static do
       stage = args[:stage]
       filename = "#{app_name}.tar.gz"
       run_locally do
-        within root_path do
-          execute :rm, "-rf #{filename}" if test("[ -e #{root_path}/#{filename} ]")
+        if root_path.nil? and root_path.empty?
           execute :rm, "-rf #{app_name}" if test("[ -d #{root_path}/#{app_name} ]")
           execute :grunt, stage
           execute :grunt, "build"
           execute :cp, "-r dist #{app_name}"
           execute :tar, "-zcvf #{filename} #{app_name}"
+        else
+          within root_path do
+            execute :rm, "-rf #{filename}" if test("[ -e #{root_path}/#{filename} ]")
+            execute :rm, "-rf #{app_name}" if test("[ -d #{root_path}/#{app_name} ]")
+            execute :grunt, stage
+            execute :grunt, "build"
+            execute :cp, "-r dist #{app_name}"
+            execute :tar, "-zcvf #{filename} #{app_name}"
+          end
         end
+
       end
     end
 
