@@ -66,7 +66,8 @@ namespace :static do
       filename = "#{app_name}.tar.gz"
       run_locally do
         if root_path.nil?
-          execute :rm, "-rf #{app_name}" if test("[ -d #{root_path}/#{app_name} ]")
+          execute :rm, "-rf #{filename}" if test("[ -e #{filename} ]")
+          execute :rm, "-rf #{app_name}" if test("[ -d #{app_name} ]")
           execute :grunt, stage
           execute :grunt, "build"
           execute :cp, "-r dist #{app_name}"
